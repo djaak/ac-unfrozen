@@ -27,7 +27,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             <span className="inline-block px-4 py-2 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-cyan-300 text-sm font-medium mb-6">
-              🚗 Pretoria's Trusted Car AC Specialists
+              🚗 Pretoria&apos;s Trusted Car AC Specialists
             </span>
           </motion.div>
 
@@ -232,7 +232,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold text-white">
                 AC <span className="text-cyan-400">Unfrozen</span>
               </h3>
-              <p className="text-slate-400 mt-2">Pretoria's trusted car AC specialists</p>
+              <p className="text-slate-400 mt-2">Pretoria&apos;s trusted car AC specialists</p>
             </div>
             <div className="flex flex-col items-center md:items-end gap-2">
               <a href="tel:+27824519555" className="text-cyan-400 hover:text-cyan-300 font-medium">
