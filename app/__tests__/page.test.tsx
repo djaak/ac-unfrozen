@@ -1,67 +1,119 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
-import Home from '../page'
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import Home from "../page";
 
-// framer-motion uses browser APIs not available in jsdom
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => <div {...props}>{children}</div>,
-    h1: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => <h1 {...props}>{children}</h1>,
-    p: ({ children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => <p {...props}>{children}</p>,
-  },
-}))
+// Mock client components that use framer-motion
+vi.mock("@/components/AnimatedSection", () => ({
+  default: ({ children, className }: { children: React.ReactNode; className?: string }) => (
+    <div className={className}>{children}</div>
+  ),
+}));
 
-describe('Home page', () => {
-  it('renders the brand name', () => {
-    render(<Home />)
-    expect(screen.getAllByText(/AC Unfrozen/i).length).toBeGreaterThan(0)
-  })
+vi.mock("@/components/AnimatedHero", () => ({
+  AnimatedHeroItem: ({ children, className }: { children: React.ReactNode; className?: string }) => (
+    <div className={className}>{children}</div>
+  ),
+  ScrollIndicator: () => <div data-testid="scroll-indicator" />,
+}));
 
-  it('renders the hero tagline', () => {
-    render(<Home />)
-    expect(screen.getByText(/Professional car air conditioning repair/i)).toBeInTheDocument()
-  })
+vi.mock("@/components/SmoothScrollButton", () => ({
+  default: ({ className }: { className?: string }) => (
+    <button className={className}>Our Services</button>
+  ),
+}));
 
-  it('renders a call-now link with the correct phone number', () => {
-    render(<Home />)
-    const phoneLinks = screen.getAllByRole('link', { name: /082 451 9555/i })
-    expect(phoneLinks.length).toBeGreaterThan(0)
-    phoneLinks.forEach(link => {
-      expect(link).toHaveAttribute('href', 'tel:+27824519555')
-    })
-  })
+describe("Home page", () => {
+  it("renders the brand name", () => {
+    render(<Home />);
+    expect(screen.getAllByText(/AC Unfrozen/i).length).toBeGreaterThan(0);
+  });
 
-  it('renders the Services section heading', () => {
-    render(<Home />)
-    expect(screen.getByRole('heading', { name: /Our Services/i })).toBeInTheDocument()
-  })
+  it("renders the hero tagline", () => {
+    render(<Home />);
+    expect(
+      screen.getByText(/Professional mobile car air conditioning repair/i)
+    ).toBeInTheDocument();
+  });
 
-  it('renders all 6 service cards', () => {
-    render(<Home />)
+  it("renders call links with the correct phone number (066 151 4879)", () => {
+    render(<Home />);
+    const phoneLinks = screen.getAllByRole("link", { name: /066 151 4879/i });
+    expect(phoneLinks.length).toBeGreaterThan(0);
+    phoneLinks.forEach((link) => {
+      expect(link).toHaveAttribute("href", "tel:+27661514879");
+    });
+  });
+
+  it("renders WhatsApp links", () => {
+    render(<Home />);
+    const waLinks = screen.getAllByRole("link", { name: /WhatsApp/i });
+    expect(waLinks.length).toBeGreaterThan(0);
+    waLinks.forEach((link) => {
+      expect(link).toHaveAttribute("href", "https://wa.me/27661514879");
+    });
+  });
+
+  it("renders the Services section heading", () => {
+    render(<Home />);
+    expect(
+      screen.getByRole("heading", { name: /Our Services/i })
+    ).toBeInTheDocument();
+  });
+
+  it("renders all 6 service cards", () => {
+    render(<Home />);
     const expectedServices = [
-      'AC Repair',
-      'Regular Maintenance',
-      'AC Inspection',
-      'Refrigerant Recharge',
-      'Compressor Repair',
-      'Heater Blower Repair',
-    ]
-    expectedServices.forEach(service => {
-      expect(screen.getByRole('heading', { name: service })).toBeInTheDocument()
-    })
-  })
+      "AC Repair",
+      "Regular Maintenance",
+      "AC Inspection",
+      "Refrigerant Recharge",
+      "Compressor Repair",
+      "Heater Blower Repair",
+    ];
+    expectedServices.forEach((service) => {
+      expect(
+        screen.getByRole("heading", { name: service })
+      ).toBeInTheDocument();
+    });
+  });
 
-  it('renders the Why Choose Us stats', () => {
-    render(<Home />)
-    expect(screen.getByText('10+')).toBeInTheDocument()
-    expect(screen.getByText('500+')).toBeInTheDocument()
-    expect(screen.getByText('100%')).toBeInTheDocument()
-    expect(screen.getByText('24hr')).toBeInTheDocument()
-  })
+  it("renders the Why Choose Us stats", () => {
+    render(<Home />);
+    expect(screen.getByText("10+")).toBeInTheDocument();
+    expect(screen.getByText("500+")).toBeInTheDocument();
+    expect(screen.getByText("100%")).toBeInTheDocument();
+    expect(screen.getByText("24hr")).toBeInTheDocument();
+  });
 
-  it('renders the footer with tagline', () => {
-    render(<Home />)
-    const matches = screen.getAllByText(/Pretoria's trusted car AC specialists/i)
-    expect(matches.length).toBeGreaterThanOrEqual(1)
-  })
-})
+  it("renders the FAQ section with all 5 questions", () => {
+    render(<Home />);
+    expect(
+      screen.getByRole("heading", { name: /Frequently Asked Questions/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/How much does car AC regas cost in Pretoria/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/How long does a car AC regas take/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Do you come to me or do I need to bring my car/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/How do I know if my car AC needs regassing/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/What areas do you service/i)
+    ).toBeInTheDocument();
+  });
+
+  it("renders the footer with address and service area", () => {
+    render(<Home />);
+    expect(
+      screen.getByText(/411 Louis Trichardt Street, Wonderboom, Pretoria/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Serving Wonderboom, Pretoria North, Centurion/i)
+    ).toBeInTheDocument();
+  });
+});
