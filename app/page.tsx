@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Phone, MessageCircle } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import { AnimatedHeroItem, ScrollIndicator } from "@/components/AnimatedHero";
@@ -88,12 +89,14 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center pt-20 px-6 overflow-hidden">
         {/* Background image + gradient overlays */}
         <div className="absolute inset-0 z-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
+            src="/hero-bg.jpg"
             alt=""
             aria-hidden="true"
-            className="w-full h-full object-cover"
-            src="https://lh3.googleusercontent.com/aida/ADBb0uinFwdwzhzXHXJQP9B0pbHM--SF_QjzQy9qT8mVjcGsqD0AN4_20xIZ4Z1ZJqtfw8RPl1zmwKPNtCzMX3ziEHZca6wxQPQzvi7RRCDe09n0oIXHhRWa7hPsteKa6VlSwNj5hvjlgcwfS8gi3b30aBFnQetORDsS_eao_oGItPZt6lYpsHG3FxmOLcphxKc6EHb-HSIDGgvDi37Adv78hL16Bq0rZSqGcI5z3bgkCOT3G5vRWt6zpVaZnLdQSd6dLLqiF58ZeaTR1g"
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-surface-dim via-surface-dim/90 to-surface-dim/40" />
           <div className="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-surface-dim/20" />
