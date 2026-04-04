@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import Home from "../page";
 
-// Mock client components that use framer-motion
+// Mock client components
 vi.mock("@/components/AnimatedSection", () => ({
   default: ({ children, className }: { children: React.ReactNode; className?: string }) => (
     <div className={className}>{children}</div>
@@ -16,22 +16,24 @@ vi.mock("@/components/AnimatedHero", () => ({
   ScrollIndicator: () => <div data-testid="scroll-indicator" />,
 }));
 
-vi.mock("@/components/SmoothScrollButton", () => ({
-  default: ({ className }: { className?: string }) => (
-    <button className={className}>Our Services</button>
+vi.mock("@/components/NavBar", () => ({
+  default: () => (
+    <header>
+      <span>AC UNFROZEN</span>
+    </header>
   ),
 }));
 
 describe("Home page", () => {
   it("renders the brand name", () => {
     render(<Home />);
-    expect(screen.getAllByText(/AC Unfrozen/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/AC UNFROZEN/i).length).toBeGreaterThan(0);
   });
 
   it("renders the hero tagline", () => {
     render(<Home />);
     expect(
-      screen.getByText(/Professional mobile car air conditioning repair/i)
+      screen.getByText(/Professional mobile car AC repair/i)
     ).toBeInTheDocument();
   });
 
@@ -56,7 +58,7 @@ describe("Home page", () => {
   it("renders the Services section heading", () => {
     render(<Home />);
     expect(
-      screen.getByRole("heading", { name: /Our Services/i })
+      screen.getByRole("heading", { name: /Precision Services/i })
     ).toBeInTheDocument();
   });
 
@@ -72,12 +74,12 @@ describe("Home page", () => {
     ];
     expectedServices.forEach((service) => {
       expect(
-        screen.getByRole("heading", { name: service })
-      ).toBeInTheDocument();
+        screen.getAllByRole("heading", { name: service }).length
+      ).toBeGreaterThan(0);
     });
   });
 
-  it("renders the Why Choose Us stats", () => {
+  it("renders the stats", () => {
     render(<Home />);
     expect(screen.getByText("10+")).toBeInTheDocument();
     expect(screen.getByText("500+")).toBeInTheDocument();
@@ -110,8 +112,8 @@ describe("Home page", () => {
   it("renders the footer with address and service area", () => {
     render(<Home />);
     expect(
-      screen.getByText(/411 Louis Trichardt Street, Wonderboom, Pretoria/i)
-    ).toBeInTheDocument();
+      screen.getAllByText(/411 Louis Trichardt Street, Wonderboom, Pretoria/i).length
+    ).toBeGreaterThan(0);
     expect(
       screen.getByText(/Serving Wonderboom, Pretoria North, Centurion/i)
     ).toBeInTheDocument();
